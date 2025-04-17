@@ -19,8 +19,8 @@ class ReservationFactory extends Factory
     public function definition(): array
     {
         return [
-            'start_time' => fake()->randomDigit(24),
-            'end_time' => fake()->randomDigit(24),
+            'start_time' => fake()->dateTime(),
+            'end_time' => fake()->dateTime(),
             'salle_id' =>Salle::factory(),
             'user_id'=>User::factory(),
         ];
