@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('salle', SalleController::class);
     Route::resource('reservation', ReservationController::class);
+    Route::resource('admindashboard', DashboardController::class);
 
 });
 

@@ -23,6 +23,10 @@
                   <x-nav-link :href="route('reservation.index')" :active="request()->routeIs('reservation.index')">
                     {{ __('Reservation') }}
                 </x-nav-link>
+
+                <x-nav-link :href="route('admindashboard.index')" :active="request()->routeIs('admindashboard.index')">
+                  {{ __('Admin Dashboard') }}
+              </x-nav-link>
                 </div>
             </div>
 

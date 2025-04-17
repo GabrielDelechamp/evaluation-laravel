@@ -16,8 +16,8 @@ class DashboardController extends Controller
         // Statistiques globales
         $totalSalles = Salle::count();
         $totalReservations = Reservation::count();
-        $reservationsAujourdhui = Reservation::whereDate('heure_debut', Carbon::today())->count();
-        $reservationsASuivre = Reservation::where('heure_debut', '>=', Carbon::now())->count();
+        $reservationsAujourdhui = Reservation::whereDate('start_time', Carbon::today())->count();
+        $reservationsASuivre = Reservation::where('start_time', '>=', Carbon::now())->count();
 
         // Taux de réservation par semaine (dernières 4 semaines)
         $statsParSemaine = $this->getWeeklyStats();
@@ -53,7 +53,7 @@ class DashboardController extends Controller
             $weeks[] = $weekLabel;
 
             // Compter les réservations pour cette semaine
-            $count = Reservation::whereBetween('heure_debut', [$startOfWeek, $endOfWeek])->count();
+            $count = Reservation::whereBetween('start_time', [$startOfWeek, $endOfWeek])->count();
 
             // Calculer le taux de réservation (nb réservations / capacité théorique)
             $totalCapacite = Salle::count() * 5 * 8; // 5 jours * 8 heures par jour
@@ -83,7 +83,7 @@ class DashboardController extends Controller
             $months[] = $monthLabel;
 
             // Compter les réservations pour ce mois
-            $count = Reservation::whereBetween('heure_debut', [$startOfMonth, $endOfMonth])->count();
+            $count = Reservation::whereBetween('start_time', [$startOfMonth, $endOfMonth])->count();
 
             // Calculer le taux de réservation (approximativement)
             $daysInMonth = $month->daysInMonth;
@@ -102,9 +102,9 @@ class DashboardController extends Controller
 
     private function getTopRooms()
     {
-        return Salle::select('salles.id', 'salles.nom', DB::raw('COUNT(reservations.id) as total_reservations'))
+        return Salle::select('salles.id', 'salles.name', DB::raw('COUNT(reservations.id) as total_reservations'))
             ->leftJoin('reservations', 'salles.id', '=', 'reservations.salle_id')
-            ->groupBy('salles.id', 'salles.nom')
+            ->groupBy('salles.id', 'salles.name')
             ->orderByDesc('total_reservations')
             ->limit(5)
             ->get();
