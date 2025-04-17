@@ -25,14 +25,14 @@
       <td>{{$reservation->start_time}}</td>
       <td>{{$reservation->end_time}}</td>
 
-      {{-- <td class='flex gap-2'>
-        <x-button link="{{ route('salle.edit', ['salle' => $salle]) }}" class="bg-yellow-500">Éditer</x-button>
-        <form method="post" action="{{ route('salle.destroy', ['salle' => $salle]) }}">
+      <td class='flex gap-2'>
+        <x-button link="{{ route('reservation.edit', ['reservation' => $reservation]) }}" class="bg-yellow-500">Éditer</x-button>
+        <form method="post" action="{{ route('reservation.destroy', ['reservation' => $reservation]) }}">
             @method('delete')
             @csrf
-            <button type="submit" class="p-2 text-white bg-red-500 rounded-xl">Supprimer</button>
+            <button type="submit" class="p-2 text-white bg-red-500 rounded-xl">Annuler</button>
         </form>
-      </td> --}}
+      </td>
     </tr>
 
     @endforeach

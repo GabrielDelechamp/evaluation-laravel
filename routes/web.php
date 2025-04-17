@@ -22,4 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('reservation', ReservationController::class);
 
 });
+
+// Routes pour le tableau de bord administrateur
+Route::middleware(['auth', 'is.admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+});
 require __DIR__.'/auth.php';
