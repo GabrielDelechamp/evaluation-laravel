@@ -5,6 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
+use App\Models\Salle;
 
 /**
  * @property int $id
@@ -19,16 +22,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User|null $user
  *
  * @method static \Database\Factories\ReservationFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereEndTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereSalleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereStartTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereSalleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -39,9 +42,9 @@ class Reservation extends Model
     /**
      * Get the user that owns the Reservation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo<User, Reservation>
      */
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -49,24 +52,39 @@ class Reservation extends Model
     /**
      * Get the salle that owns the Reservation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo<Salle, Reservation>
      */
-    public function salle(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function salle(): BelongsTo
     {
         return $this->belongsTo(Salle::class, 'salle_id');
     }
 
-    public function formattedDate()
+    /**
+     * Get the formatted date of the reservation
+     *
+     * @return string
+     */
+    public function formattedDate(): string
     {
         return Carbon::parse($this->start_time)->format('Y-m-d');
     }
 
-    public function formattedStartTime()
+    /**
+     * Get the formatted start time of the reservation
+     *
+     * @return string
+     */
+    public function formattedStartTime(): string
     {
         return Carbon::parse($this->start_time)->format('H:i');
     }
 
-    public function formattedEndTime()
+    /**
+     * Get the formatted end time of the reservation
+     *
+     * @return string
+     */
+    public function formattedEndTime(): string
     {
         return Carbon::parse($this->end_time)->format('H:i');
     }

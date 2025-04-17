@@ -6,6 +6,8 @@ use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ReservationController extends Controller
 {
@@ -19,8 +21,10 @@ class ReservationController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         // Si admin, voir toutes les réservations
         // Sinon, voir uniquement ses propres réservations
@@ -35,8 +39,10 @@ class ReservationController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $reservations = Reservation::all();
 
@@ -45,8 +51,11 @@ class ReservationController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return View
      */
-    public function store(Request $request)
+    public function store(Request $request): View
     {
         $validated = $request->validate([
             'start_time' => 'required',
@@ -91,8 +100,11 @@ class ReservationController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param Reservation $reservation
+     * @return void
      */
-    public function show(Reservation $reservation)
+    public function show(Reservation $reservation): void
     {
         // Vérifier si l'utilisateur peut voir cette réservation
         if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
@@ -104,8 +116,11 @@ class ReservationController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param Reservation $reservation
+     * @return View
      */
-    public function edit(Reservation $reservation)
+    public function edit(Reservation $reservation): View
     {
         // Vérifier si l'utilisateur peut modifier cette réservation
         if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
@@ -119,8 +134,12 @@ class ReservationController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Reservation $reservation
+     * @return View
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(Request $request, Reservation $reservation): View
     {
         // Vérifier si l'utilisateur peut modifier cette réservation
         if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
@@ -169,8 +188,11 @@ class ReservationController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param Reservation $reservation
+     * @return RedirectResponse
      */
-    public function destroy(Reservation $reservation)
+    public function destroy(Reservation $reservation): RedirectResponse
     {
         // Vérifier si l'utilisateur peut supprimer cette réservation
         if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
