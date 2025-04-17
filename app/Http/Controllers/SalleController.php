@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Salle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SalleController extends Controller
 {
+    /**
+     * Constructeur avec middleware d'authentification
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -21,6 +30,11 @@ class SalleController extends Controller
      */
     public function create()
     {
+        // Vérifier si l'utilisateur est admin
+        if (!Auth::user()->isAn('admin')) {
+            abort(403, 'Accès non autorisé.');
+        }
+
         $salles = Salle::all();
         return view('salle.createSalle', compact('salles'));
     }
@@ -30,15 +44,19 @@ class SalleController extends Controller
      */
     public function store(Request $request)
     {
-        $salle=New Salle;
-        $salle->name=$request->name;
-        $salle->capacity=$request->capacity;
-        $salle->surface=$request->surface;
+        // Vérifier si l'utilisateur est admin
+        if (!Auth::user()->isAn('admin')) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        $salle = New Salle;
+        $salle->name = $request->name;
+        $salle->capacity = $request->capacity;
+        $salle->surface = $request->surface;
         $salle->save();
 
-        $salles=Salle::all();
+        $salles = Salle::all();
         return view('salle.indexSalle', compact('salles'));
-
     }
 
     /**
@@ -54,7 +72,12 @@ class SalleController extends Controller
      */
     public function edit(Salle $salle)
     {
-        return view ('salle.editSalle', compact('salle'));
+        // Vérifier si l'utilisateur est admin
+        if (!Auth::user()->isAn('admin')) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        return view('salle.editSalle', compact('salle'));
     }
 
     /**
@@ -62,12 +85,17 @@ class SalleController extends Controller
      */
     public function update(Request $request, Salle $salle)
     {
-        $salle->name=$request->name;
-        $salle->capacity=$request->capacity;
-        $salle->surface=$request->surface;
+        // Vérifier si l'utilisateur est admin
+        if (!Auth::user()->isAn('admin')) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        $salle->name = $request->name;
+        $salle->capacity = $request->capacity;
+        $salle->surface = $request->surface;
         $salle->save();
 
-        $salles=Salle::all();
+        $salles = Salle::all();
         return view('salle.indexSalle', compact('salles'));
     }
 
@@ -76,6 +104,11 @@ class SalleController extends Controller
      */
     public function destroy(Salle $salle)
     {
+        // Vérifier si l'utilisateur est admin
+        if (!Auth::user()->isAn('admin')) {
+            abort(403, 'Accès non autorisé.');
+        }
+
         $salle->delete();
         return redirect()->route('salle.index');
     }

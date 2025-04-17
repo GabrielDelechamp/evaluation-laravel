@@ -30,6 +30,7 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($reservations as $reservation)
+                @if (Auth::user()->isAn('admin') || Auth::user()->id == $reservation->user->id)
                 <tr class="hover:bg-gray-50">
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{$reservation->salle->name}}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$reservation->user->first_name}}</td>
@@ -46,6 +47,8 @@
                     </div>
                   </td>
                 </tr>
+                @endif
+
                 @endforeach
               </tbody>
             </table>
