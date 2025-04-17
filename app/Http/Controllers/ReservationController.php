@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
@@ -39,6 +39,7 @@ class ReservationController extends Controller
     public function create()
     {
         $reservations = Reservation::all();
+
         return view('reservation.createReservation', compact('reservations'));
     }
 
@@ -76,7 +77,7 @@ class ReservationController extends Controller
                 ->withInput();
         }
 
-        $reservation = new Reservation;
+        $reservation = new Reservation();
         $reservation->start_time = $start;
         $reservation->end_time = $end;
         $reservation->salle_id = $validated['salle_id'];
@@ -84,6 +85,7 @@ class ReservationController extends Controller
         $reservation->save();
 
         $reservations = Auth::user()->isAn('admin') ? Reservation::all() : Reservation::where('user_id', Auth::id())->get();
+
         return view('reservation.indexReservation', compact('reservations'));
     }
 
@@ -93,7 +95,7 @@ class ReservationController extends Controller
     public function show(Reservation $reservation)
     {
         // Vérifier si l'utilisateur peut voir cette réservation
-        if (!Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
+        if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
             abort(403, 'Accès non autorisé.');
         }
 
@@ -106,11 +108,12 @@ class ReservationController extends Controller
     public function edit(Reservation $reservation)
     {
         // Vérifier si l'utilisateur peut modifier cette réservation
-        if (!Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
+        if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
             abort(403, 'Accès non autorisé.');
         }
 
         $reservations = Reservation::all();
+
         return view('reservation.editReservation', compact('reservation', 'reservations'));
     }
 
@@ -120,7 +123,7 @@ class ReservationController extends Controller
     public function update(Request $request, Reservation $reservation)
     {
         // Vérifier si l'utilisateur peut modifier cette réservation
-        if (!Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
+        if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
             abort(403, 'Accès non autorisé.');
         }
 
@@ -160,6 +163,7 @@ class ReservationController extends Controller
         $reservation->save();
 
         $reservations = Auth::user()->isAn('admin') ? Reservation::all() : Reservation::where('user_id', Auth::id())->get();
+
         return view('reservation.indexReservation', compact('reservations'));
     }
 
@@ -169,11 +173,12 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         // Vérifier si l'utilisateur peut supprimer cette réservation
-        if (!Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
+        if (! Auth::user()->isAn('admin') && $reservation->user_id !== Auth::id()) {
             abort(403, 'Accès non autorisé.');
         }
 
         $reservation->delete();
+
         return redirect()->route('reservation.index');
     }
 }

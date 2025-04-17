@@ -22,6 +22,7 @@ class SalleController extends Controller
     public function index()
     {
         $salles = Salle::all();
+
         return view('salle.indexSalle', compact('salles'));
     }
 
@@ -31,11 +32,12 @@ class SalleController extends Controller
     public function create()
     {
         // Vérifier si l'utilisateur est admin
-        if (!Auth::user()->isAn('admin')) {
+        if (! Auth::user()->isAn('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 
         $salles = Salle::all();
+
         return view('salle.createSalle', compact('salles'));
     }
 
@@ -45,17 +47,18 @@ class SalleController extends Controller
     public function store(Request $request)
     {
         // Vérifier si l'utilisateur est admin
-        if (!Auth::user()->isAn('admin')) {
+        if (! Auth::user()->isAn('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 
-        $salle = New Salle;
+        $salle = new Salle();
         $salle->name = $request->name;
         $salle->capacity = $request->capacity;
         $salle->surface = $request->surface;
         $salle->save();
 
         $salles = Salle::all();
+
         return view('salle.indexSalle', compact('salles'));
     }
 
@@ -64,7 +67,6 @@ class SalleController extends Controller
      */
     public function show(Salle $salle)
     {
-        //
     }
 
     /**
@@ -73,7 +75,7 @@ class SalleController extends Controller
     public function edit(Salle $salle)
     {
         // Vérifier si l'utilisateur est admin
-        if (!Auth::user()->isAn('admin')) {
+        if (! Auth::user()->isAn('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 
@@ -86,7 +88,7 @@ class SalleController extends Controller
     public function update(Request $request, Salle $salle)
     {
         // Vérifier si l'utilisateur est admin
-        if (!Auth::user()->isAn('admin')) {
+        if (! Auth::user()->isAn('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 
@@ -96,6 +98,7 @@ class SalleController extends Controller
         $salle->save();
 
         $salles = Salle::all();
+
         return view('salle.indexSalle', compact('salles'));
     }
 
@@ -105,11 +108,12 @@ class SalleController extends Controller
     public function destroy(Salle $salle)
     {
         // Vérifier si l'utilisateur est admin
-        if (!Auth::user()->isAn('admin')) {
+        if (! Auth::user()->isAn('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 
         $salle->delete();
+
         return redirect()->route('salle.index');
     }
 }

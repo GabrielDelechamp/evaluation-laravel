@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\Salle;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -57,14 +56,14 @@ class DashboardController extends Controller
 
             // Calculer le taux de réservation (nb réservations / capacité théorique)
             $totalCapacite = Salle::count() * 5 * 8; // 5 jours * 8 heures par jour
-            $tauxOccupation = $totalCapacite > 0 ? round(($count / $totalCapacite) * 100, 2) : 0;
+            $tauxOccupation = $totalCapacite > 0 ? round($count / $totalCapacite * 100, 2) : 0;
 
             $reservationData[] = $tauxOccupation;
         }
 
         return [
             'labels' => $weeks,
-            'data' => $reservationData
+            'data' => $reservationData,
         ];
     }
 
@@ -87,16 +86,16 @@ class DashboardController extends Controller
 
             // Calculer le taux de réservation (approximativement)
             $daysInMonth = $month->daysInMonth;
-            $workingDays = min($daysInMonth * 5/7, 22); // Approximation des jours ouvrables
+            $workingDays = min($daysInMonth * 5 / 7, 22); // Approximation des jours ouvrables
             $totalCapacite = Salle::count() * $workingDays * 8; // jours ouvrables * 8 heures par jour
-            $tauxOccupation = $totalCapacite > 0 ? round(($count / $totalCapacite) * 100, 2) : 0;
+            $tauxOccupation = $totalCapacite > 0 ? round($count / $totalCapacite * 100, 2) : 0;
 
             $reservationData[] = $tauxOccupation;
         }
 
         return [
             'labels' => $months,
-            'data' => $reservationData
+            'data' => $reservationData,
         ];
     }
 
