@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        (new BouncerSeeder)->run();
-        (new ReservationSeeder)->run();
-        (new UserSeeder)->run();
         (new SalleSeeder)->run();
+        (new BouncerSeeder)->run();
+        (new UserSeeder)->run();
+        (new ReservationSeeder)->run();
     }
 }

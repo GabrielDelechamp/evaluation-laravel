@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
         ]);
-        $user=User::find(21);
+        $user=User::find(1);
         $user->assign('admin');
 
         User::factory(20)->create();
